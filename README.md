@@ -1,4 +1,4 @@
-CGGo
+CodingGame
 ====
 
-Solutions for the Go challenges of http://www.codingame.com/
+Solutions for the challenges of http://www.codingame.com/
