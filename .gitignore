@@ -10,6 +10,9 @@ _test
 # Input CodingGame tests
 input
 
+# Descriptions CodingGame tests
+desc
+
 # Architecture specific extensions/prefixes
 *.[568vq]
 [568vq].out
