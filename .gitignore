@@ -7,8 +7,9 @@
 _obj
 _test
 
-# Input CodingGame tests
+# Input and Output CodingGame tests
 input
+output
 
 # Descriptions CodingGame tests
 desc
