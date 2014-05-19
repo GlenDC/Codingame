@@ -20,12 +20,18 @@ func (p *program) Update(input string) {
 		fmt.Sscanf(input, "%d %d\n", &start, &duration)
 
 		if _, ok := p.Calculations[start]; !ok {
-			p.Calculations[start] = duration
-
+			ok = true
+			for s, d := range p.Calculations {
+				if !(start+duration < s || start > s+d) {
+					ok = false
+					break
+				}
+			}
+			if ok {
+				fmt.Printf("%d = %d\n", start, duration)
+				p.Calculations[start] = duration
+			}
 		}
-
-		//for k,v := range p.Calculations {
-		//}
 	}
 }
 
@@ -35,14 +41,14 @@ func (p *program) GetOutput() string {
 
 func RunProgram(id int) (string, bool) {
 	input := fmt.Sprintf("../input/super_computer_%d.txt", id)
-	ch, ok := cgreader.RunProgram(input)
+	ch, ok := cgreader.GetInput(input)
 	app := program{}
 	for <-ok {
 		app.Update(<-ch)
 	}
 	output := app.GetOutput()
 	test := fmt.Sprintf("../output/super_computer_%d.txt", id)
-	valid := cgreader.TestProgram(test, output)
+	valid := cgreader.TestOutput(test, output)
 	return output, valid
 }
 
