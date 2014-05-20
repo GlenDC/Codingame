@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateProgramManual(
+	cgreader.RunAndValidateManualProgram(
 		"../input/ascii_1.txt",
-		"../output/ascii_%d.txt",
+		"../output/ascii_1.txt",
 		true,
 		func(ch <-chan string) string {
 			var width, height int
