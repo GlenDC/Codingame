@@ -7,13 +7,6 @@
 _obj
 _test
 
-# Input and Output CodingGame tests
-input
-output
-
-# Descriptions CodingGame tests
-desc
-
 # Architecture specific extensions/prefixes
 *.[568vq]
 [568vq].out
