@@ -50,14 +50,21 @@ The tests provided are similar to the validation tests used to compute the final
 
 ## Initialization Input
 
-* **Line 1**: 2 integers TX TY. (TX, TY) indicate Thor's starting position.
+* **Line 1**: 3 integers ``DX, DY, MT``.
+   * ``DX, DY``: indicate map dimensions
+   * ``MT``: max turns
+* **Line 2**: 4 integers ``P, TX, TY, N``
+   * ``P``: max amount of hammer strikes
+   * ``TX, TY``: initial position of thor
+   * ``N``: amount of giants
+* **N following lines**: the positions ``X Y`` of the giants on the map.
 
 ## Input / Game Turn
 
-* **Line 1**: 2 integers H N.
-    * H indicates the remaining number of hammer strikes.
-    * N the number of giants which are still present on the map.on
-* **N following lines**: the positions X Y of the giants on the map.
+* **Line 1**: 2 integers ``H N``.
+    * ``H`` indicates the remaining number of hammer strikes.
+    * ``N`` the number of giants which are still present on the map.on
+* **N following lines**: the positions ``X Y`` of the giants on the map.
 
 ## Output / Game Turn
 
