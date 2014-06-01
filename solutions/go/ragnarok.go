@@ -25,22 +25,35 @@ type Ragnarok struct {
 	trail                    []Vector
 }
 
-func GetDirection(a, b string, x, y int) <-chan string {
-	ch := make(chan string)
+func GetDirection(x, y int) <-chan int {
+	ch := make(chan int)
 	go func() {
 		difference := x - y
 		switch {
 		case difference < 0:
-			ch <- a
+			ch <- -1
 		case difference > 0:
-			ch <- b
+			ch <- 1
 		default:
-			ch <- ""
+			ch <- 0
 		}
 		close(ch)
 	}()
 	return ch
 }
+
+func GetDirectionLetter(a, b string, v int) string {
+	switch v {
+	default:
+		return ""
+	case -1:
+		return a
+	case 1:
+		return b
+	}
+}
+
+var TX, TY, PX, PY, E int
 
 func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 	fmt.Sscanf(
@@ -54,6 +67,10 @@ func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 		&ragnarok.target.y,
 		&ragnarok.energy)
 
+	TX, TY = ragnarok.thor.x, ragnarok.thor.y
+	PX, PY = ragnarok.target.x, ragnarok.target.y
+	E = ragnarok.energy
+
 	ragnarok.thor.icon, ragnarok.target.icon = "H", "T"
 }
 
@@ -66,13 +83,18 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 }
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y)
-	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x)
+	fmt.Sscanf(<-ch, "%d", &E)
 
-	result_b := <-channel_b
-	result_a := <-channel_a
+	chx := GetDirection(PX, TX)
+	chy := GetDirection(PY, TY)
 
-	return fmt.Sprint(result_b + result_a)
+	dx, dy := <-chx, <-chy
+	x := GetDirectionLetter("W", "E", dx)
+	y := GetDirectionLetter("N", "S", dy)
+
+	TX, TY = TX+dx, TY+dy
+
+	return y+x
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
