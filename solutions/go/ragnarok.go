@@ -22,7 +22,7 @@ func (v Vector) GetMapIcon() string {
 type Ragnarok struct {
 	thor, target, dimensions Vector
 	energy                   int
-	trail [] Vector
+	trail                    []Vector
 }
 
 func GetDirection(a, b string, x, y, v int) <-chan string {
@@ -55,7 +55,6 @@ func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 		&ragnarok.energy)
 
 	ragnarok.thor.icon, ragnarok.target.icon = "H", "T"
-	ragnarok.trail = make([]Vector, 0, ragnarok.energy)
 }
 
 func (ragnarok *Ragnarok) GetInput() (ch chan string) {
@@ -67,19 +66,6 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 }
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	trail := append(ragnarok.trail, ragnarok.thor, ragnarok.target)
-
-	map_info := make([]cgreader.MapObject, len(trail))
-	for i, v := range trail {
-	    map_info[i] = cgreader.MapObject(v)
-	}
-
-	cgreader.DrawMap(
-		ragnarok.dimensions.x,
-		ragnarok.dimensions.y,
-		".",
-		map_info...)
-
 	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y, ragnarok.thor.y)
 	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x, ragnarok.thor.x)
 
@@ -90,7 +76,7 @@ func (ragnarok *Ragnarok) Update(ch <-chan string) string {
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
-	ragnarok.trail = append(ragnarok.trail, Vector{ragnarok.thor.x,ragnarok.thor.y,"+"})
+	ragnarok.trail = append(ragnarok.trail, Vector{ragnarok.thor.x, ragnarok.thor.y, "+"})
 
 	if strings.Contains(output, "N") {
 		ragnarok.thor.y -= 1
@@ -105,6 +91,19 @@ func (ragnarok *Ragnarok) SetOutput(output string) string {
 	}
 
 	ragnarok.energy -= 1
+
+	trail := append(ragnarok.trail, ragnarok.thor, ragnarok.target)
+
+	map_info := make([]cgreader.MapObject, len(trail))
+	for i, v := range trail {
+		map_info[i] = cgreader.MapObject(v)
+	}
+
+	cgreader.DrawMap(
+		ragnarok.dimensions.x,
+		ragnarok.dimensions.y,
+		".",
+		map_info...)
 
 	return fmt.Sprintf(
 		"Target = (%d,%d)\nThor = (%d,%d)\nEnergy = %d",
