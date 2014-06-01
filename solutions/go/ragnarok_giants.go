@@ -65,18 +65,15 @@ func (ragnarok *Ragnarok) IsPositionAvailable(x, y int) bool {
 	return true
 }
 
-// N 	<=> 	NE 		<=> 	E 		<=> 	SE 		<=> 	S 		<=> 	SW 		<=> 	W 		<=> 	NW 		<=> 	N
-// 0,1			1,1 			1,0 			1,-1 			0,-1 			-1,-1  			-1,0 			-1,1 			0,1
-/*
-+1 	+1
-+1 	+0
-+1 	-1
-+0 	-1
--1 	-1
--1 	+0
--1 	+1
-+0 	+1
-*/
+func (ragnarok *Ragnarok) RemoveGiant(x, y int) {
+	i := 0
+	for ; i < len(ragnarok.giants) ; i++ {
+		if x == ragnarok.giants[i].x && y == ragnarok.giants[i].y {
+			ragnarok.giants = append(ragnarok.giants[:i], ragnarok.giants[i+1:]...)
+			return
+		}
+	}
+}
 
 func GetADL(x, y int) (int, int) {
 	switch {
@@ -168,12 +165,29 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 }
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	return WAIT
+	return STRIKE
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
+	ragnarok.MoveGiants()
+
+	var hotspots []Vector
 	if output == STRIKE {
-		// do strike....
+		for i := 0 ; i < 9 ; i++ {
+			x, y := 0, 1
+			for u := 0 ; u < 2 ; u++ {
+				rx, ry := ragnarok.thor.x+(x*i), ragnarok.thor.y+(y*i)
+				lx, ly := ragnarok.thor.x-(x*i), ragnarok.thor.y-(y*i)
+
+				ragnarok.RemoveGiant(lx, ly)
+				ragnarok.RemoveGiant(rx, ry)
+
+				hotspots = append(hotspots, Vector{lx, ly, "X"})
+				hotspots = append(hotspots, Vector{rx, ry, "X"})
+
+				x, y = GetADR(GetADR(x, y))
+			}
+		}
 		ragnarok.energy -= 1
 	} else if output != WAIT {
 		if strings.Contains(output, "N") {
@@ -189,14 +203,13 @@ func (ragnarok *Ragnarok) SetOutput(output string) string {
 		}
 	}
 
-	ragnarok.MoveGiants()
-
 	ragnarok.turn++
 
-	giants := append(ragnarok.giants, ragnarok.thor)
+	hotspots = append(hotspots, ragnarok.thor)
+	hotspots = append(hotspots, ragnarok.giants...)
 
-	map_info := make([]cgreader.MapObject, len(giants))
-	for i, v := range giants {
+	map_info := make([]cgreader.MapObject, len(hotspots))
+	for i, v := range hotspots {
 		map_info[i] = cgreader.MapObject(v)
 	}
 
