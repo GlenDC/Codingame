@@ -8,11 +8,21 @@ import (
 
 type Vector struct {
 	x, y int
+	icon string
+}
+
+func (v Vector) GetMapCoordinates() string {
+	return fmt.Sprintf("%d;%d", v.x, v.y)
+}
+
+func (v Vector) GetMapIcon() string {
+	return v.icon
 }
 
 type Ragnarok struct {
 	thor, target, dimensions Vector
 	energy                   int
+	trail [] Vector
 }
 
 func GetDirection(a, b string, x, y, v int) <-chan string {
@@ -43,6 +53,9 @@ func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 		&ragnarok.target.x,
 		&ragnarok.target.y,
 		&ragnarok.energy)
+
+	ragnarok.thor.icon, ragnarok.target.icon = "H", "T"
+	ragnarok.trail = make([]Vector, 0, ragnarok.energy)
 }
 
 func (ragnarok *Ragnarok) GetInput() (ch chan string) {
@@ -54,6 +67,19 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 }
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
+	trail := append(ragnarok.trail, ragnarok.thor, ragnarok.target)
+
+	map_info := make([]cgreader.MapObject, len(trail))
+	for i, v := range trail {
+	    map_info[i] = cgreader.MapObject(v)
+	}
+
+	cgreader.DrawMap(
+		ragnarok.dimensions.x,
+		ragnarok.dimensions.y,
+		".",
+		map_info...)
+
 	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y, ragnarok.thor.y)
 	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x, ragnarok.thor.x)
 
@@ -64,6 +90,8 @@ func (ragnarok *Ragnarok) Update(ch <-chan string) string {
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
+	ragnarok.trail = append(ragnarok.trail, Vector{ragnarok.thor.x,ragnarok.thor.y,"+"})
+
 	if strings.Contains(output, "N") {
 		ragnarok.thor.y -= 1
 	} else if strings.Contains(output, "S") {
@@ -103,9 +131,10 @@ func (ragnarok *Ragnarok) LoseConditionCheck() bool {
 }
 
 func (ragnarok *Ragnarok) WinConditionCheck() bool {
-	return ragnarok.target == ragnarok.thor
+	return ragnarok.target.x == ragnarok.thor.x &&
+		ragnarok.target.y == ragnarok.thor.y
 }
 
 func main() {
-	cgreader.RunTargetProgram("../../input/ragnarok_1.txt", true, &Ragnarok{})
+	cgreader.RunTargetProgram("../../input/ragnarok_3.txt", true, &Ragnarok{})
 }
