@@ -11,7 +11,7 @@ The input data required for your program is provided in ASCII format:
 * The list of all the stops
 * The routes between the stops
 
-List of all the stops:
+## List of all the stops:
 
 A series of lines representing the stops (one stop per line) and which contains the following fields:
 
@@ -24,7 +24,8 @@ A series of lines representing the stops (one stop per line) and which contains 
 * The url of the stop (not used)
 * The type of stop
 * The mother station (not used)
-* These fields are separated by a comma ,
+
+_These fields are separated by a comma_ ``,``
 
 ## Example
 
@@ -36,27 +37,21 @@ A list of lines representing the routes between the stops (one route per line). 
 ​
 Each line represents a one-directional route running from the first identifier to the second. If two stops A and B are reciprocally accessible, then there will be two lines to represent this route:
 
-    ```
     A B
     B A
-    ```
 
 ## Example
 
-    ```
     StopArea:LAIL StopArea:GALH
     StopArea:GALH StopArea:LAIL
-    ```
 
 ## Distance
 
 The distance d between two points A and B will be calculated using the following formula:
 
-    ```
     x = (longitudeB - longitudeA) x cos( ( latitudeA + latitudeB ) / 2 )
     y = latitudeB - latitudeA
     d = sqrt( pow(x) + pow(y) ) x 6731
-    ```
 ​
 _Note: In this formula, the latitudes and longitudes are expressed in radians. 6371 corresponds to the radius of the earth in km._
 
@@ -83,7 +78,6 @@ If it is not possible to find a route between the start and end points, the prog
 
 ## Example
 
-    ```
     Input
 
         StopArea:ABDU
@@ -100,4 +94,3 @@ If it is not possible to find a route between the start and end points, the prog
 
         Abel Durand
         Avenue Blanche
-    ```
