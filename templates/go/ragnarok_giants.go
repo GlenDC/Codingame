@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/glendc/cgreader"
-	"math"
 	"strings"
 )
 
@@ -126,35 +125,7 @@ func (ragnarok *Ragnarok) MoveGiants() {
 }
 
 func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
-	fmt.Sscanf(
-		<-ch,
-		"%d %d %d \n",
-		&ragnarok.dimensions.x,
-		&ragnarok.dimensions.y,
-		&ragnarok.maxTurns)
-
-	var giants int
-
-	fmt.Sscanf(
-		<-ch,
-		"%d %d %d %d \n",
-		&ragnarok.energy,
-		&ragnarok.thor.x,
-		&ragnarok.thor.y,
-		&giants)
-
-	ragnarok.giants = make([]Vector, giants)
-
-	for i := range ragnarok.giants {
-		fmt.Sscanf(
-			<-ch,
-			"%d %d \n",
-			&ragnarok.giants[i].x,
-			&ragnarok.giants[i].y)
-		ragnarok.giants[i].icon = "G"
-	}
-
-	ragnarok.thor.icon = "H"
+	// parse the initial input
 }
 
 func (ragnarok *Ragnarok) GetInput() (ch chan string) {
@@ -165,53 +136,9 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 	return
 }
 
-func Sqrt(x int) int {
-	return int(math.Sqrt(float64(x)))
-}
-
-func Pow(x int) int {
-	return int(math.Pow(float64(x), 2.0))
-}
-
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	x, y := ragnarok.thor.x, ragnarok.thor.y
-
-	td, id := ragnarok.dimensions.x+ragnarok.dimensions.y, 0
-	dc := 0
-	for i, giant := range ragnarok.giants {
-		if giant.y > y {
-			dc |= 1
-		} else if giant.y < y {
-			dc |= 2
-		}
-
-		if giant.x > x {
-			dc |= 4
-		} else if giant.x < x {
-			dc |= 8
-		}
-
-		dx, dy := giant.x-x, giant.y-y
-		d := Sqrt(Pow(dx) + Pow(dy))
-
-		if d < 3 {
-			return STRIKE
-		}
-
-		if d < td {
-			id = i
-			td = d
-		}
-
-	}
-
-	if dc == 15 {
-		return WAIT
-	}
-
-	chx := GetDirection(ragnarok.giants[id].x, x)
-	chy := GetDirection(ragnarok.giants[id].y, y)
-	return GetDirectionLetter("N", "S", <-chy) + GetDirectionLetter("W", "E", <-chx)
+	// define your solution its update logic
+	return WAIT
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {

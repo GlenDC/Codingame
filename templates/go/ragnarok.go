@@ -8,11 +8,21 @@ import (
 
 type Vector struct {
 	x, y int
+	icon string
+}
+
+func (v Vector) GetMapCoordinates() string {
+	return fmt.Sprintf("%d;%d", v.x, v.y)
+}
+
+func (v Vector) GetMapIcon() string {
+	return v.icon
 }
 
 type Ragnarok struct {
 	thor, target, dimensions Vector
 	energy                   int
+	trail                    []Vector
 }
 
 func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
@@ -33,6 +43,8 @@ func (ragnarok *Ragnarok) Update(ch <-chan string) string {
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
+	ragnarok.trail = append(ragnarok.trail, Vector{ragnarok.thor.x, ragnarok.thor.y, "+"})
+
 	if strings.Contains(output, "N") {
 		ragnarok.thor.y -= 1
 	} else if strings.Contains(output, "S") {
@@ -46,6 +58,19 @@ func (ragnarok *Ragnarok) SetOutput(output string) string {
 	}
 
 	ragnarok.energy -= 1
+
+	trail := append(ragnarok.trail, ragnarok.thor, ragnarok.target)
+
+	map_info := make([]cgreader.MapObject, len(trail))
+	for i, v := range trail {
+		map_info[i] = cgreader.MapObject(v)
+	}
+
+	cgreader.DrawMap(
+		ragnarok.dimensions.x,
+		ragnarok.dimensions.y,
+		".",
+		map_info...)
 
 	return fmt.Sprintf(
 		"Target = (%d,%d)\nThor = (%d,%d)\nEnergy = %d",
