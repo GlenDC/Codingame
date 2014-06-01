@@ -2,48 +2,110 @@ package main
 
 import (
 	"fmt"
+	"strings"
+	"github.com/glendc/cgreader"
 )
 
-type position struct {
+type Vector struct {
 	x, y int
 }
 
-type result struct {
-	value     int
-	direction string
+type Ragnarok struct {
+	thor, target, dimensions Vector
+	energy                   int
 }
 
-func GetDirection(a, b string, x, y, v int) <-chan result {
-	ch := make(chan result)
+func GetDirection(a, b string, x, y, v int) <-chan string {
+	ch := make(chan string)
 	go func() {
 		difference := x - y
 		switch {
 		case difference < 0:
-			ch <- result{v - 1, a}
+			ch <- a
 		case difference > 0:
-			ch <- result{v + 1, b}
+			ch <- b
 		default:
-			ch <- result{v, ""}
+			ch <- ""
 		}
 		close(ch)
 	}()
 	return ch
 }
 
-func main() {
-	var target, thor position
-	fmt.Scanf("%d %d %d %d\n", &target.x, &target.y, &thor.x, &thor.y)
+func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
+	fmt.Sscanf(
+		<-ch,
+		"%d %d %d %d %d %d %d \n",
+		&ragnarok.dimensions.x,
+		&ragnarok.dimensions.y,
+		&ragnarok.thor.x,
+		&ragnarok.thor.y,
+		&ragnarok.target.x,
+		&ragnarok.target.y,
+		&ragnarok.energy)
+}
 
-	for {
-		channel_b := GetDirection("N", "S", target.y, thor.y, thor.y)
-		channel_a := GetDirection("E", "W", thor.x, target.x, thor.x)
+func (ragnarok *Ragnarok) GetInput() (ch chan string) {
+	ch = make(chan string)
+	go func() {
+		ch <- fmt.Sprintf("%d", ragnarok.energy)
+	}()
+	return
+}
 
-		result_b := <-channel_b
-		result_a := <-channel_a
+func (ragnarok *Ragnarok) Update(ch <-chan string) string {
+	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y, ragnarok.thor.y)
+	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x, ragnarok.thor.x)
 
-		thor.y = result_b.value
-		thor.x = result_a.value
+	result_b := <-channel_b
+	result_a := <-channel_a
 
-		fmt.Println(result_b.direction + result_a.direction)
+	return fmt.Sprint(result_b + result_a)
+}
+
+func (ragnarok *Ragnarok) SetOutput(output string) string {
+	if strings.Contains(output, "N") {
+		ragnarok.thor.y -= 1
+	} else if strings.Contains(output, "S") {
+		ragnarok.thor.y += 1
 	}
+
+	if strings.Contains(output, "E") {
+		ragnarok.thor.x += 1
+	} else if strings.Contains(output, "W") {
+		ragnarok.thor.x -= 1
+	}
+
+	ragnarok.energy -= 1
+
+	return fmt.Sprintf(
+		"Target = (%d,%d)\nThor = (%d,%d)\nEnergy = %d",
+		ragnarok.target.x,
+		ragnarok.target.y,
+		ragnarok.thor.x,
+		ragnarok.thor.y,
+		ragnarok.energy)
+}
+
+func (ragnarok *Ragnarok) LoseConditionCheck() bool {
+	if ragnarok.energy <= 0 {
+		return true
+	}
+
+	x, y := ragnarok.thor.x, ragnarok.thor.y
+	dx, dy := ragnarok.dimensions.x, ragnarok.dimensions.y
+
+	if x < 0 || x >= dx || y < 0 || y >= dy {
+		return true
+	}
+
+	return false
+}
+
+func (ragnarok *Ragnarok) WinConditionCheck() bool {
+	return ragnarok.target == ragnarok.thor
+}
+
+func main() {
+	cgreader.RunTargetProgram("../../input/ragnarok_1.txt", true, &Ragnarok{})
 }
