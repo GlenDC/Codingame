@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"github.com/glendc/cgreader"
 	"strings"
 )
@@ -164,8 +165,31 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 	return
 }
 
+func Sqrt(x int) int {
+	return int(math.Sqrt(float64(x)))
+}
+
+func Pow(x int) int {
+	return int(math.Pow(float64(x), 2.0))
+}
+
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	return STRIKE
+	x, y := ragnarok.thor.x, ragnarok.thor.y
+	n := 0
+
+	for _, giant := range ragnarok.giants {
+		dx, dy := giant.x-x, giant.y-y
+		d := Sqrt(Pow(dx)+Pow(dy))
+		if d < 2 {
+			n++
+		}
+	}
+
+	if n > 0 {
+		return STRIKE
+	}
+
+	return WAIT
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
@@ -220,7 +244,8 @@ func (ragnarok *Ragnarok) SetOutput(output string) string {
 		map_info...)
 
 	return fmt.Sprintf(
-		"Amount of Giants = %d\nThor = (%d,%d)\nEnergy = %d",
+		"Turn = %d\nAmount of Giants = %d\nThor = (%d,%d)\nEnergy = %d",
+		ragnarok.turn,
 		len(ragnarok.giants),
 		ragnarok.thor.x,
 		ragnarok.thor.y,
@@ -253,5 +278,5 @@ func (ragnarok *Ragnarok) WinConditionCheck() bool {
 }
 
 func main() {
-	cgreader.RunTargetProgram("../../input/ragnarok_giants_10.txt", true, &Ragnarok{})
+	cgreader.RunTargetProgram("../../input/ragnarok_giants_1.txt", true, &Ragnarok{})
 }
