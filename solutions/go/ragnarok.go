@@ -25,7 +25,7 @@ type Ragnarok struct {
 	trail                    []Vector
 }
 
-func GetDirection(a, b string, x, y, v int) <-chan string {
+func GetDirection(a, b string, x, y int) <-chan string {
 	ch := make(chan string)
 	go func() {
 		difference := x - y
@@ -66,8 +66,8 @@ func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 }
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y, ragnarok.thor.y)
-	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x, ragnarok.thor.x)
+	channel_b := GetDirection("N", "S", ragnarok.target.y, ragnarok.thor.y)
+	channel_a := GetDirection("E", "W", ragnarok.thor.x, ragnarok.target.x)
 
 	result_b := <-channel_b
 	result_a := <-channel_a
