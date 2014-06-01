@@ -43,7 +43,6 @@ The word that scores the most points using the available letters (1 to 7 letters
  
 ## Example
 
-    ```
     Input
 
         5
@@ -57,7 +56,6 @@ The word that scores the most points using the available letters (1 to 7 letters
     Output
 
         which
-    ```
 
 ## Conditions
 
