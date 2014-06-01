@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"github.com/glendc/cgreader"
+	"strings"
 )
 
 type Vector struct {
