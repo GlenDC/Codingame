@@ -36,7 +36,9 @@ The tests provided are similar to the validation tests used to compute the final
 
 ## Initialization Input
 
-* **Line 1**: 4 integers _LX LY TX TY_. _(LX, LY)_ indicate the position of the light of power. _(TX, TY)_ indicate Thor’s starting position.
+* **Line 1**: 4 integers _LX LY TX TY_.
+    * _(LX, LY)_ indicate the position of the light of power.
+    * _(TX, TY)_ indicate Thor’s starting position.
 
 ## Input / Game Turn
 
