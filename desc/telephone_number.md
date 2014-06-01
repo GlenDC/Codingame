@@ -27,7 +27,6 @@ The number of elements (referencing a number) stored in the structure.
 
 ## Examples
 
-    ```
     Input
 
         1
@@ -36,9 +35,7 @@ The number of elements (referencing a number) stored in the structure.
     Output
 
         10
-    ```
 
-    ```
     Input
 
         2
@@ -48,9 +45,7 @@ The number of elements (referencing a number) stored in the structure.
     Output
 
         20
-    ```
 
-    ```
     Input
 
         2
@@ -60,9 +55,7 @@ The number of elements (referencing a number) stored in the structure.
     Output
 
         10
-    ```
 
-    ```
     Input
 
         5
@@ -75,7 +68,6 @@ The number of elements (referencing a number) stored in the structure.
     Output
 
         28
-    ```
 
 ## Conditions
 
