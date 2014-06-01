@@ -7,13 +7,11 @@ Scientists give you the starting day of their calculation and the number of cons
 
 ## For example:
 
-    ```
     Calculation     Starting Day    Duration
     A               2               5
     B               9               7
     C               15              6
     D               9               3
-    ```
 
 * Calculation A starts on day 2 and ends on day 6
 * Calculation B starts on day 9 and ends on day 15
@@ -40,7 +38,6 @@ The maximum number of calculations that can be carried out.
 
 ## Examples
 
-    ```
     Input
 
         4
@@ -52,9 +49,8 @@ The maximum number of calculations that can be carried out.
     Output
 
         3
-    ```
+        
 
-    ```
     Input
 
         5
@@ -67,7 +63,6 @@ The maximum number of calculations that can be carried out.
     Output
 
         4
-    ```
 
 ## Conditions
 
