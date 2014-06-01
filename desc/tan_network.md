@@ -29,7 +29,7 @@ _These fields are separated by a comma_ ``,``
 
 ## Example
 
-StopArea: _ABDU,"Abel Durand",,47.22019661,-1.60337553,,,1,_
+    StopArea: _ABDU,"Abel Durand",,47.22019661,-1.60337553,,,1,_
 
 The routes between stops:
 
