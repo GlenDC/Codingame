@@ -125,6 +125,8 @@ func (ragnarok *Ragnarok) MoveGiants() {
 	}
 }
 
+var THOR_X, THOR_Y, ENERGY, N int
+
 func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 	fmt.Sscanf(
 		<-ch,
@@ -133,17 +135,18 @@ func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 		&ragnarok.dimensions.y,
 		&ragnarok.maxTurns)
 
-	var giants int
-
 	fmt.Sscanf(
 		<-ch,
 		"%d %d %d %d \n",
 		&ragnarok.energy,
 		&ragnarok.thor.x,
 		&ragnarok.thor.y,
-		&giants)
+		&N)
 
-	ragnarok.giants = make([]Vector, giants)
+	ENERGY = ragnarok.energy
+	THOR_X, THOR_Y = ragnarok.thor.x, ragnarok.thor.y
+
+	ragnarok.giants = make([]Vector, N)
 
 	for i := range ragnarok.giants {
 		fmt.Sscanf(
@@ -160,7 +163,10 @@ func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
 func (ragnarok *Ragnarok) GetInput() (ch chan string) {
 	ch = make(chan string)
 	go func() {
-		ch <- fmt.Sprintf("%d", ragnarok.energy)
+		ch <- fmt.Sprintf("%d %d", ragnarok.energy, len(ragnarok.giants))
+		for _, giant := range ragnarok.giants {
+			ch <- fmt.Sprintf("%d %d", giant.x, giant.y)
+		}
 	}()
 	return
 }
@@ -173,12 +179,23 @@ func Pow(x int) int {
 	return int(math.Pow(float64(x), 2.0))
 }
 
-func (ragnarok *Ragnarok) Update(ch <-chan string) string {
-	x, y := ragnarok.thor.x, ragnarok.thor.y
+type Position struct {
+	x, y int
+}
 
-	td, id := ragnarok.dimensions.x+ragnarok.dimensions.y, 0
+func (ragnarok *Ragnarok) Update(ch <-chan string) string {
+	fmt.Sscanf(<-ch, "%d %d", &ENERGY, &N)
+
+	giants := make([]Position, N)
+	for i := 0; i < N; i++ {
+		fmt.Sscanf(<-ch, "%d %d", &giants[i].x, &giants[i].y)
+	}
+
+	x, y := THOR_X, THOR_Y
+	td, id := 9999, 0
 	dc := 0
-	for i, giant := range ragnarok.giants {
+
+	for i, giant := range giants {
 		if giant.y > y {
 			dc |= 1
 		} else if giant.y < y {
@@ -209,9 +226,13 @@ func (ragnarok *Ragnarok) Update(ch <-chan string) string {
 		return WAIT
 	}
 
-	chx := GetDirection(ragnarok.giants[id].x, x)
-	chy := GetDirection(ragnarok.giants[id].y, y)
-	return GetDirectionLetter("N", "S", <-chy) + GetDirectionLetter("W", "E", <-chx)
+	chx := GetDirection(giants[id].x, x)
+	chy := GetDirection(giants[id].y, y)
+
+	dx, dy := <-chx, <-chy
+	THOR_X, THOR_Y = THOR_X+dx, THOR_Y+dy
+
+	return GetDirectionLetter("N", "S", dy) + GetDirectionLetter("W", "E", dx)
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
@@ -300,5 +321,5 @@ func (ragnarok *Ragnarok) WinConditionCheck() bool {
 }
 
 func main() {
-	cgreader.RunTargetProgram("../../input/ragnarok_giants_10.txt", true, &Ragnarok{})
+	cgreader.RunTargetProgram("../../input/ragnarok_giants_1.txt", true, &Ragnarok{})
 }
