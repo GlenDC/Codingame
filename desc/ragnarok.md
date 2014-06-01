@@ -68,9 +68,9 @@ The tests provided are similar to the validation tests used to compute the final
 * **Output for turn 1**: ``S``
     * _Thor moves Southwards._
 * **New position** = _(3, 7)_
-* **Input for turn 2**: 9
+* **Input for turn 2**: ``9``
     * _Thor has enough energy left for 9 moves_
-* **Output for turn 2**: S
+* **Output for turn 2**: ``S``
     * _Thor moves Southwards._
 * **New position** = _(3, 6)_
 * **Thor has won**: he has reached the flash of power!
