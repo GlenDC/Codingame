@@ -8,8 +8,8 @@ import (
 
 func main() {
 	cgreader.RunAndValidateManualProgram(
-		"../input/ascii_1.txt",
-		"../output/ascii_1.txt",
+		"../../input/ascii_1.txt",
+		"../../output/ascii_1.txt",
 		true,
 		func(ch <-chan string) string {
 			var width, height int
