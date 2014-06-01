@@ -28,7 +28,6 @@ The length of the shortest sequence containing all the sub-sequences.
 
 ## Examples
 
-    ```
     Input
 
         2
@@ -38,9 +37,7 @@ The length of the shortest sequence containing all the sub-sequences.
     Output
 
         6
-    ```
 
-    ```
     Input
 
         3
@@ -51,9 +48,7 @@ The length of the shortest sequence containing all the sub-sequences.
     Output
 
         10
-    ``` 
-
-    ```
+        
     Input
 
         3
@@ -64,7 +59,6 @@ The length of the shortest sequence containing all the sub-sequences.
     Output
 
         5
-    ```
 
 ## Conditions
 
