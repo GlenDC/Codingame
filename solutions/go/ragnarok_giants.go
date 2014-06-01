@@ -175,21 +175,43 @@ func Pow(x int) int {
 
 func (ragnarok *Ragnarok) Update(ch <-chan string) string {
 	x, y := ragnarok.thor.x, ragnarok.thor.y
-	n := 0
 
-	for _, giant := range ragnarok.giants {
+	td, id := ragnarok.dimensions.x+ragnarok.dimensions.y, 0
+	dc := 0
+	for i, giant := range ragnarok.giants {
+		if giant.y > y {
+			dc |= 1
+		} else if giant.y < y {
+			dc |= 2
+		}
+
+		if giant.x > x {
+			dc |= 4
+		} else if giant.x < x {
+			dc |= 8
+		}
+
 		dx, dy := giant.x-x, giant.y-y
 		d := Sqrt(Pow(dx)+Pow(dy))
-		if d < 2 {
-			n++
+
+		if d < 3 {
+			return STRIKE
 		}
+
+		if d < td {
+			id = i
+			td = d
+		}
+
 	}
 
-	if n > 0 {
-		return STRIKE
+	if dc == 15 {
+		return WAIT
 	}
 
-	return WAIT
+	chx := GetDirection(ragnarok.giants[id].x, x)
+	chy := GetDirection(ragnarok.giants[id].y, y)
+	return GetDirectionLetter("N", "S", <-chy) + GetDirectionLetter("W", "E", <-chx)
 }
 
 func (ragnarok *Ragnarok) SetOutput(output string) string {
@@ -278,5 +300,5 @@ func (ragnarok *Ragnarok) WinConditionCheck() bool {
 }
 
 func main() {
-	cgreader.RunTargetProgram("../../input/ragnarok_giants_1.txt", true, &Ragnarok{})
+	cgreader.RunTargetProgram("../../input/ragnarok_giants_10.txt", true, &Ragnarok{})
 }
