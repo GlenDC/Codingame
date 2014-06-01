@@ -28,21 +28,103 @@ type Ragnarok struct {
 var WAIT string = "WAIT"
 var STRIKE string = "STRIKE"
 
-func GetDirection(a, b string, x, y int) <-chan string {
-	ch := make(chan string)
+func GetDirection(x, y int) <-chan int {
+	ch := make(chan int)
 	go func() {
 		difference := x - y
 		switch {
 		case difference < 0:
-			ch <- a
+			ch <- -1
 		case difference > 0:
-			ch <- b
+			ch <- 1
 		default:
-			ch <- ""
+			ch <- 0
 		}
 		close(ch)
 	}()
 	return ch
+}
+
+func GetDirectionLetter(a, b string, v int) string {
+	switch v {
+	default:
+		return ""
+	case -1:
+		return a
+	case 1:
+		return b
+	}
+}
+
+func (ragnarok *Ragnarok) IsPositionAvailable(x, y int) bool {
+	for i := range ragnarok.giants {
+		if x == ragnarok.giants[i].x && y == ragnarok.giants[i].y {
+			return false
+		}
+	}
+	return true
+}
+
+// N 	<=> 	NE 		<=> 	E 		<=> 	SE 		<=> 	S 		<=> 	SW 		<=> 	W 		<=> 	NW 		<=> 	N
+// 0,1			1,1 			1,0 			1,-1 			0,-1 			-1,-1  			-1,0 			-1,1 			0,1
+/*
++1 	+1
++1 	+0
++1 	-1
++0 	-1
+-1 	-1
+-1 	+0
+-1 	+1
++0 	+1
+*/
+
+func GetADL(x, y int) (int, int) {
+	switch {
+	default:
+		return x, y+x
+	case x == 0:
+		return y*-1, y
+	case x == y:
+		return 0, y
+	}
+}
+
+func GetADR(x, y int) (int, int) {
+	switch {
+	default:
+		return x, y-x
+	case x == 0:
+		return y, y
+	case x != y:
+		return 0, y
+	}
+}
+
+func (ragnarok *Ragnarok) MoveGiant(giant, target *Vector) {
+	channel_a := GetDirection(target.x, giant.x)
+	channel_b := GetDirection(target.y, giant.y)
+
+	dx, dy := <-channel_a, <-channel_b
+	x, y := giant.x+dx, giant.y+dy
+
+	for i := 0; i < 2 && !ragnarok.IsPositionAvailable( x, y ) ; i++ {
+		if i == 0 {
+			dx, dy = GetADL(dx, dy)
+		} else {
+			dx, dy = GetADR(dx, dy)
+		}
+		x, y = giant.x+dx, giant.y+dy
+	}
+
+	if ragnarok.IsPositionAvailable( x, y ) {
+		giant.x, giant.y = x, y
+	}
+}
+
+func (ragnarok *Ragnarok) MoveGiants() {
+	for i := range ragnarok.giants {
+		ragnarok.MoveGiant(&ragnarok.giants[i], &ragnarok.thor)
+	}
 }
 
 func (ragnarok *Ragnarok) ParseInitialData(ch <-chan string) {
@@ -106,6 +188,8 @@ func (ragnarok *Ragnarok) SetOutput(output string) string {
 			ragnarok.thor.x -= 1
 		}
 	}
+
+	ragnarok.MoveGiants()
 
 	ragnarok.turn++
 
