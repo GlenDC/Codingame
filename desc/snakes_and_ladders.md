@@ -25,9 +25,7 @@ At the start of the game, the player begins on the starting square (labeled S). 
 
 If we were to have the following board:
 
-    ```
     S   1   R   4   3   4   3    -5    2    -4    E
-    ```
 
 The fastest way to win in this case is to throw a _2_ on the first throw of the dice, which will bring the player to _the square R_. Then they will throw the dice again and get _6_, so they will move forward and land on a square with _2_. On the last turn, they will not have a choice: they will move forward two squares and arrive on _the square E_.
 
@@ -55,7 +53,6 @@ The minimum number of turns required to reach the finishing square or impossible
 
 ## Example
 
-    ```
     Input
 
         11
@@ -74,7 +71,6 @@ The minimum number of turns required to reach the finishing square or impossible
     Output
 
         3
-    ```
 
 ## Conditions
 
