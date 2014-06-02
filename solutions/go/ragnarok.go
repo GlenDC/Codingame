@@ -35,12 +35,12 @@ func GetDirectionLetter(a, b string, v int) string {
 
 var TX, TY, PX, PY, E int
 
-func Initialize(input string) {
-	fmt.Sscanf(input, "%d %d %d %d", &PX, &PY, &TX, &TY)
+func Initialize(ch <-chan string) {
+	fmt.Sscanf(<-ch, "%d %d %d %d", &PX, &PY, &TX, &TY)
 }
 
-func Update(input string) string {
-	fmt.Sscanf(input, "%d", &E)
+func Update(ch <-chan string) string {
+	fmt.Sscanf(<-ch, "%d", &E)
 
 	chx := GetDirection(PX, TX)
 	chy := GetDirection(PY, TY)
