@@ -50,14 +50,7 @@ The tests provided are similar to the validation tests used to compute the final
 
 ## Initialization Input
 
-* **Line 1**: 3 integers ``DX, DY, MT``.
-   * ``DX, DY``: indicate map dimensions
-   * ``MT``: max turns
-* **Line 2**: 4 integers ``P, TX, TY, N``
-   * ``P``: max amount of hammer strikes
-   * ``TX, TY``: initial position of thor
-   * ``N``: amount of giants
-* **N following lines**: the positions ``X Y`` of the giants on the map.
+* **Line 1**: 2 integers ``TX TY``, initial position of thor
 
 ## Input / Game Turn
 
