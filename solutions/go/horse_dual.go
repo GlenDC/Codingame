@@ -7,32 +7,28 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
-		"../../input/horse_dual_1.txt",
-		"../../output/horse_dual_1.txt",
+	cgreader.SetTimeout(60); cgreader.RunAndValidateManualProgram(
+		"../../input/horse_dual_3.txt",
+		"../../output/horse_dual_3.txt",
 		true,
 		func(ch <-chan string) string {
 			var n int
 			fmt.Sscanf(<-ch, "%d", &n)
 
 			horses := make([]int, n)
-			for i := range horses {
-				fmt.Sscanf(<-ch, "%d", &horses[i])
-			}
 
 			D := math.MaxInt32
-			for i, a := range horses {
-				for u, b := range horses {
-					if i != u {
-						x := a - b
+			for i := range horses {
+				fmt.Sscanf(<-ch, "%d", &horses[i])
+				for u := 0 ; u < i ; u++ {
+					x := horses[u] - horses[i]
 
-						if x < 0 {
-							x *= -1
-						}
+					if x < 0 {
+						x *= -1
+					}
 
-						if x < D {
-							D = x
-						}
+					if x < D {
+						D = x
 					}
 				}
 			}
