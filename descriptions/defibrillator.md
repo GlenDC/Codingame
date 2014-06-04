@@ -25,7 +25,7 @@ The distance ``d`` between two points ``A`` and ``B`` will be calculated using t
 
     y = latitudeB - latitudeA
 
-    d = sqrt(pow(x) + pow(2)) x 6371
+    d = sqrt(pow(x) + pow(y)) x 6371
 ​
 _Note: In this formula, the latitudes and longitudes are expressed in **radians**. 6371 corresponds to the radius of the earth in **km**._
 
