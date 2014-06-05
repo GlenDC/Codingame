@@ -27,13 +27,13 @@ func main() {
 		"../../input/horse_dual_3.txt",
 		"../../output/horse_dual_3.txt",
 		true,
-		func(ch <-chan string) string {
+		func(input <-chan string, output chan string) {
 			var n int
-			fmt.Sscanf(<-ch, "%d", &n)
+			fmt.Sscanf(<-input, "%d", &n)
 
 			horses := make([]int, n)
 			for i := range horses {
-				fmt.Sscanf(<-ch, "%d", &horses[i])
+				fmt.Sscanf(<-input, "%d", &horses[i])
 			}
 
 			sort.Sort(intArray(horses))
@@ -51,6 +51,6 @@ func main() {
 				}
 			}
 
-			return fmt.Sprintf("%d\n", D)
+			output <- fmt.Sprintf("%d", D)
 		})
 }

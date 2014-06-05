@@ -17,13 +17,13 @@ func main() {
 			fmt.Sscanf(<-input, "%d", &m)
 
 			types := make(map[string]string)
-			for i := 0 ; i < n ; i++ {
+			for i := 0; i < n; i++ {
 				var key, value string
 				fmt.Sscanf(<-input, "%s %s", &key, &value)
 				types[strings.ToLower(key)] = value
 			}
 
-			for i := 0 ; i < m ; i++ {
+			for i := 0; i < m; i++ {
 				var path string
 				fmt.Sscanf(<-input, "%s", &path)
 				path = strings.ToLower(path)

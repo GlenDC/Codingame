@@ -17,17 +17,17 @@ func main() {
 		"../../input/defibrillator_1.txt",
 		"../../output/defibrillator_1.txt",
 		true,
-		func(ch <-chan string) string {
+		func(input <-chan string, output chan string) {
 			var longitude, latitude float64
 			var n int
 
-			longitude, latitude = ParseFloat(<-ch), ParseFloat(<-ch)
-			fmt.Sscanf(<-ch, "%d", &n)
+			longitude, latitude = ParseFloat(<-input), ParseFloat(<-input)
+			fmt.Sscanf(<-input, "%d", &n)
 
 			var name string
 
 			for distance, i := math.MaxFloat64, 0; i < n; i++ {
-				info := strings.Split(<-ch, ";")
+				info := strings.Split(<-input, ";")
 
 				lo, la := ParseFloat(info[4]), ParseFloat(info[5])
 
@@ -40,6 +40,6 @@ func main() {
 				}
 			}
 
-			return fmt.Sprintf("%s\n", name)
+			output <- fmt.Sprintf("%s", name)
 		})
 }

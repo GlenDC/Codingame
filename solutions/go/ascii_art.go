@@ -8,42 +8,38 @@ import (
 
 func main() {
 	cgreader.RunAndValidateManualProgram(
-		"../../input/ascii_1.txt",
-		"../../output/ascii_1.txt",
+		"../../input/ascii_4.txt",
+		"../../output/ascii_4.txt",
 		true,
-		func(ch <-chan string) string {
+		func(input <-chan string, output chan string) {
 			var width, height int
 			var text string
 
-			fmt.Sscanln(<-ch, &width)
-			fmt.Sscanln(<-ch, &height)
-			fmt.Sscanln(<-ch, &text)
+			fmt.Sscanln(<-input, &width)
+			fmt.Sscanln(<-input, &height)
+			fmt.Sscanln(<-input, &text)
 
 			text = strings.ToUpper(text)
 
 			ascii := make([]string, height)
 			for i := 0; i < height; i++ {
-				ascii[i] = <-ch
+				ascii[i] = <-input
 			}
 
-			output := make([]string, height)
+			lines := make([]string, height)
 			for _, char := range text {
 				character := int(char) - 65
 				if character < 0 || character > 26 {
 					character = 26
 				}
-				for i := range output {
+				for i := range lines {
 					position := character * width
-					output[i] += ascii[i][position : position+width]
+					lines[i] += ascii[i][position : position+width]
 				}
 			}
 
-			var program_output string
-
-			for _, line := range output {
-				program_output += line + "\n"
+			for _, line := range lines {
+				output <- line
 			}
-
-			return program_output
 		})
 }
