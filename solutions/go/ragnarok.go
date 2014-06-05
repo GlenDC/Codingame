@@ -55,5 +55,6 @@ func Update(input <-chan string, output chan string) {
 }
 
 func main() {
+	cgreader.SetFrameRate(30)
 	cgreader.RunRagnarok("../../input/ragnarok_1.txt", true, Initialize, Update)
 }
