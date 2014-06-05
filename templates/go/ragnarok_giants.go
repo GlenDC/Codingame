@@ -4,13 +4,12 @@ import (
 	"github.com/glendc/cgreader"
 )
 
-func Initialize(ch <-chan string) {
+func Initialize(input <-chan string) {
 	// Parse Input
 }
 
-func Update(ch <-chan string) string {
+func Update(input <-chan string, output chan string) {
 	// Define solution Logic
-	return "OUTPUT"
 }
 
 func main() {

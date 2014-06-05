@@ -36,9 +36,9 @@ func GetDirectionLetter(a, b string, v int) string {
 	}
 }
 
-func Initialize(ch <-chan string) {
+func Initialize(input <-chan string) {
 	fmt.Sscanf(
-		<-ch,
+		<-input,
 		"%d %d",
 		&THOR_X,
 		&THOR_Y)
@@ -56,12 +56,12 @@ type Position struct {
 	x, y int
 }
 
-func Update(ch <-chan string) string {
-	fmt.Sscanf(<-ch, "%d %d", &ENERGY, &GIANTS)
+func Update(input <-chan string, output chan string) {
+	fmt.Sscanf(<-input, "%d %d", &ENERGY, &GIANTS)
 
 	giants := make([]Position, GIANTS)
 	for i := 0; i < GIANTS; i++ {
-		fmt.Sscanf(<-ch, "%d %d", &giants[i].x, &giants[i].y)
+		fmt.Sscanf(<-input, "%d %d", &giants[i].x, &giants[i].y)
 	}
 
 	x, y := THOR_X, THOR_Y
@@ -85,7 +85,8 @@ func Update(ch <-chan string) string {
 		d := Sqrt(Pow(dx) + Pow(dy))
 
 		if d < 3 {
-			return "STRIKE"
+			output <- "STRIKE"
+			return
 		}
 
 		if d < td {
@@ -96,7 +97,8 @@ func Update(ch <-chan string) string {
 	}
 
 	if dc == 15 {
-		return "WAIT"
+		output <- "WAIT"
+		return
 	}
 
 	chx := GetDirection(giants[id].x, x)
@@ -105,7 +107,7 @@ func Update(ch <-chan string) string {
 	dx, dy := <-chx, <-chy
 	THOR_X, THOR_Y = THOR_X+dx, THOR_Y+dy
 
-	return GetDirectionLetter("N", "S", dy) + GetDirectionLetter("W", "E", dx)
+	output <- GetDirectionLetter("N", "S", dy) + GetDirectionLetter("W", "E", dx)
 }
 
 func main() {
