@@ -4,10 +4,26 @@ import (
 	"fmt"
 	"github.com/glendc/cgreader"
 	"math"
+	"sort"
 )
 
+type intArray []int
+
+func (s intArray) Len() int {
+	return len(s)
+}
+
+func (s intArray) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s intArray) Less(i, j int) bool {
+	return s[i] < s[j]
+}
+
 func main() {
-	cgreader.SetTimeout(60); cgreader.RunAndValidateManualProgram(
+	cgreader.SetTimeout(2.0)
+	cgreader.RunAndValidateManualProgram(
 		"../../input/horse_dual_3.txt",
 		"../../output/horse_dual_3.txt",
 		true,
@@ -16,20 +32,22 @@ func main() {
 			fmt.Sscanf(<-ch, "%d", &n)
 
 			horses := make([]int, n)
-
-			D := math.MaxInt32
 			for i := range horses {
 				fmt.Sscanf(<-ch, "%d", &horses[i])
-				for u := 0 ; u < i ; u++ {
-					x := horses[u] - horses[i]
+			}
 
-					if x < 0 {
-						x *= -1
-					}
+			sort.Sort(intArray(horses))
 
-					if x < D {
-						D = x
-					}
+			D := math.MaxInt32
+			for i := 1; i < n; i++ {
+				x := horses[i-1] - horses[i]
+
+				if x < 0 {
+					x *= -1
+				}
+
+				if x < D {
+					D = x
 				}
 			}
 
