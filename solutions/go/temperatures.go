@@ -12,18 +12,19 @@ func main() {
 		"../../input/temperatures_1.txt",
 		"../../output/temperatures_1.txt",
 		true,
-		func(ch <-chan string) string {
+		func(input <-chan string, output chan string) {
 			var n int
-			fmt.Sscanf(<-ch, "%d", &n)
+			fmt.Sscanf(<-input, "%d", &n)
 
 			if n == 0 {
-				return "0\n"
+				output <- "0"
+				return
 			}
 
-			input := strings.SplitAfter(<-ch, " ")
+			lines := strings.SplitAfter(<-input, " ")
 
 			closest, closest_absolute := math.MaxInt32, math.MaxInt32
-			for _, t := range input {
+			for _, t := range lines {
 				var temperature int
 				fmt.Sscanf(t, "%d", &temperature)
 
@@ -33,6 +34,6 @@ func main() {
 				}
 			}
 
-			return fmt.Sprintf("%d\n", closest)
+			output <- fmt.Sprintf("%d", closest)
 		})
 }

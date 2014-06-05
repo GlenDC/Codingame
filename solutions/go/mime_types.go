@@ -11,36 +11,33 @@ func main() {
 		"../../input/mime_types_5.txt",
 		"../../output/mime_types_5.txt",
 		true,
-		func(ch <-chan string) string {
+		func(input <-chan string, output chan string) {
 			var n, m int
-			fmt.Sscanf(<-ch, "%d", &n)
-			fmt.Sscanf(<-ch, "%d", &m)
+			fmt.Sscanf(<-input, "%d", &n)
+			fmt.Sscanf(<-input, "%d", &m)
 
 			types := make(map[string]string)
 			for i := 0 ; i < n ; i++ {
 				var key, value string
-				fmt.Sscanf(<-ch, "%s %s", &key, &value)
+				fmt.Sscanf(<-input, "%s %s", &key, &value)
 				types[strings.ToLower(key)] = value
 			}
 
-			var output string
 			for i := 0 ; i < m ; i++ {
 				var path string
-				fmt.Sscanf(<-ch, "%s", &path)
+				fmt.Sscanf(<-input, "%s", &path)
 				path = strings.ToLower(path)
 
 				if strings.Contains(path, ".") {
 					sp := strings.Split(path, ".")
 					if value, ok := types[sp[len(sp)-1]]; ok {
-						output += fmt.Sprintf("%s\n", value)
+						output <- fmt.Sprintf("%s", value)
 					} else {
-						output += fmt.Sprintln("UNKNOWN")
+						output <- fmt.Sprint("UNKNOWN")
 					}
 				} else {
-					output += fmt.Sprintln("UNKNOWN")
+					output <- fmt.Sprint("UNKNOWN")
 				}
 			}
-
-			return output
 		})
 }
