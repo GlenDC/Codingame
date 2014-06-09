@@ -12,7 +12,6 @@ type SALSquare interface {
 
 var LAOS int
 var Squares []SALSquare
-var MoveSquaresPassed []int
 
 func ClipMovement(position, n int) (int, bool) {
 	if m := n - 1; position > m {
