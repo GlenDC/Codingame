@@ -123,5 +123,5 @@ func main() {
 			"../../input/ragnarok_giants_8.txt",
 			"../../input/ragnarok_giants_9.txt",
 			"../../input/ragnarok_giants_10.txt"},
-			false, Initialize, Update)
+		false, Initialize, Update)
 }

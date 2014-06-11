@@ -8,18 +8,8 @@ import (
 
 func main() {
 	cgreader.RunAndValidateManualPrograms(
-		[]string{
-			"../../input/stock_exchange_losses_1.txt",
-			"../../input/stock_exchange_losses_2.txt",
-			"../../input/stock_exchange_losses_3.txt",
-			"../../input/stock_exchange_losses_4.txt",
-			"../../input/stock_exchange_losses_5.txt"},
-		[]string{
-			"../../output/stock_exchange_losses_1.txt",
-			"../../output/stock_exchange_losses_2.txt",
-			"../../output/stock_exchange_losses_3.txt",
-			"../../output/stock_exchange_losses_4.txt",
-			"../../output/stock_exchange_losses_5.txt"},
+		cgreader.GetFileList("../../input/stock_exchange_losses_%d.txt", 5),
+		cgreader.GetFileList("../../output/stock_exchange_losses_%d.txt", 5),
 		true,
 		func(input <-chan string, output chan string) {
 			var ml, cm, v int64 = 0, 0, 0

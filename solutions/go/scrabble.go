@@ -62,22 +62,8 @@ func GetCharacterAmount(word string) map[string]uint {
 
 func main() {
 	cgreader.RunAndValidateManualPrograms(
-		[]string{
-			"../../input/scrabble_1.txt",
-			"../../input/scrabble_2.txt",
-			"../../input/scrabble_3.txt",
-			"../../input/scrabble_4.txt",
-			"../../input/scrabble_5.txt",
-			"../../input/scrabble_6.txt",
-			"../../input/scrabble_7.txt"},
-		[]string{
-			"../../output/scrabble_1.txt",
-			"../../output/scrabble_2.txt",
-			"../../output/scrabble_3.txt",
-			"../../output/scrabble_4.txt",
-			"../../output/scrabble_5.txt",
-			"../../output/scrabble_6.txt",
-			"../../output/scrabble_7.txt"},
+		cgreader.GetFileList("../../input/scrabble_%d.txt", 7),
+		cgreader.GetFileList("../../output/scrabble_%d.txt", 7),
 		true,
 		func(input <-chan string, output chan string) {
 			var n int
