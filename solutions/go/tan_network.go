@@ -13,9 +13,12 @@ type Station struct {
 }
 
 type Destination struct {
-	identifier string
-	cost       float64
+	hash uint32
+	cost float64
 }
+
+var hashMap map[uint32]string
+var identifierMap map[string]uint32
 
 func GetInput(input <-chan string) string {
 	line := <-input
@@ -33,26 +36,26 @@ func GetCost(lo_a, lo_b, la_a, la_b float64) float64 {
 }
 
 var minCost float64 = math.MaxFloat64
-var routes map[string][]Destination
-var finalStation, startStation string
-var finalRoute []string
+var routes map[uint32][]Destination
+var finalHash, startHash uint32
+var finalRoute []uint32
 
-func TravelRecursive(cost float64, route []string) {
-	for _, station := range routes[route[len(route)-1]] {
-		if cost += station.cost; cost < minCost {
-			if station.identifier == finalStation {
+func TravelRecursive(cost float64, route []uint32) {
+	for _, destination := range routes[route[len(route)-1]] {
+		if cost += destination.cost; cost < minCost {
+			if destination.hash == finalHash {
 				minCost = cost
-				finalRoute = append(route, station.identifier)
+				finalRoute = append(route, destination.hash)
 			} else {
 				isOK := true
 				for _, stop := range route {
-					if station.identifier == stop {
+					if destination.hash == stop {
 						isOK = false
 						break
 					}
 				}
 				if isOK {
-					TravelRecursive(cost, append(route, station.identifier))
+					TravelRecursive(cost, append(route, destination.hash))
 				}
 			}
 		}
@@ -61,59 +64,61 @@ func TravelRecursive(cost float64, route []string) {
 
 func main() {
 	cgreader.RunAndValidateManualPrograms(
-		cgreader.GetFileList("../../input/tan_network_%d.txt", 4),
-		cgreader.GetFileList("../../output/tan_network_%d.txt", 4),
+		cgreader.GetFileList("../../input/tan_network_%d.txt", 6),
+		cgreader.GetFileList("../../output/tan_network_%d.txt", 6),
 		true,
 		func(input <-chan string, output chan string) {
 			// this block could be ommited when solo-running
 			minCost = math.MaxFloat64
-			finalStation, startStation = "", ""
 			routes, finalRoute = nil, nil
-			startStation, finalStation = GetInput(input), GetInput(input)
+
+			start, stop := GetInput(input), GetInput(input)
+			hashMap = make(map[uint32]string)
+			identifierMap = make(map[string]uint32)
 
 			var ns, nr uint32
-
 			fmt.Sscanf(<-input, "%d", &ns)
-			stations := make(map[string]Station)
+			stations := make(map[uint32]Station)
 			for i := uint32(0); i < ns; i++ {
 				station := GetInput(input)
 				info := strings.Split(station, ",")
-				stations[info[0]] = Station{
+				hashMap[i] = info[0]
+				identifierMap[info[0]] = i
+				stations[i] = Station{
 					info[1][1 : len(info[1])-1],
 					ToFloat(info[3]),
 					ToFloat(info[4])}
 			}
 
-			if startStation == finalStation {
-				output <- stations[startStation].name
+			startHash, finalHash = identifierMap[start], identifierMap[stop]
+
+			if startHash == finalHash {
+				output <- stations[startHash].name
 				return
 			}
 
 			fmt.Sscanf(<-input, "%d", &nr)
-			routes = make(map[string][]Destination)
+			routes = make(map[uint32][]Destination)
 			for i := uint32(0); i < nr; i++ {
 				route := GetInput(input)
 				ra, ro := string(route[:4]), string(route[14:])
+				ha, ho := identifierMap[ra], identifierMap[ro]
 
-				a, b := stations[ra], stations[ro]
+				a, b := stations[ha], stations[ho]
 				cost := GetCost(
 					a.latitude, b.latitude,
 					a.longitude, b.longitude)
 
-				routes[ra] = append(routes[ra], Destination{ro, cost})
+				routes[ha] = append(routes[ha], Destination{ho, cost})
 			}
 
-			var startStops string
-			for _, stop := range routes[startStation] {
-				startStops += stop.identifier + ", "
-			}
-			TravelRecursive(0, append(make([]string, 0), startStation))
+			TravelRecursive(0, append(make([]uint32, 0), startHash))
 
 			if finalRoute == nil {
 				output <- "IMPOSSIBLE"
 			} else {
-				for _, identifier := range finalRoute {
-					output <- stations[identifier].name
+				for _, hash := range finalRoute {
+					output <- stations[hash].name
 				}
 			}
 		})
