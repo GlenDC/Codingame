@@ -14,7 +14,7 @@ type Station struct {
 
 type Destination struct {
 	hash uint32
-	cost float64
+	cost uint16
 }
 
 var hashMap map[uint32]string
@@ -30,17 +30,17 @@ func ToFloat(str string) (x float64) {
 	return
 }
 
-func GetCost(lo_a, lo_b, la_a, la_b float64) float64 {
+func GetCost(lo_a, lo_b, la_a, la_b float64) uint16 {
 	x, y := (lo_b-lo_a)*math.Cos((la_a+la_b)/2), la_b-la_a
-	return x*x + y*y
+	return uint16((x*x + y*y) * 100000.0)
 }
 
-var minCost float64 = math.MaxFloat64
+var minCost uint16 = math.MaxUint16
 var routes map[uint32][]Destination
 var finalHash, startHash uint32
 var finalRoute []uint32
 
-func TravelRecursive(cost float64, route []uint32) {
+func TravelRecursive(cost uint16, route []uint32) {
 	for _, destination := range routes[route[len(route)-1]] {
 		if cost += destination.cost; cost < minCost {
 			if destination.hash == finalHash {
@@ -69,7 +69,7 @@ func main() {
 		true,
 		func(input <-chan string, output chan string) {
 			// this block could be ommited when solo-running
-			minCost = math.MaxFloat64
+			minCost = math.MaxUint16
 			routes, finalRoute = nil, nil
 
 			start, stop := GetInput(input), GetInput(input)
