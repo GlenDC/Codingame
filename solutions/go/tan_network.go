@@ -56,17 +56,14 @@ func TravelRecursive(cost float64, route []string, counter int) {
 				isOK := true
 				for _, stop := range route {
 					if station.identifier == stop {
-						var stops string
-						for _, stop := range route {
-							stops += stop + ", "
-						}
-						stops += station.identifier
-						cgreader.Tracef("%d. len = %d, return error... %s", counter, len(route), stops)
-						return
+						isOK = false
+						break
 					}
 				}
-				cgreader.Tracef("%d. len = %d, to %s costs %f", counter, len(route), station.identifier, cost)
-				TravelRecursive(cost, append(route, station.identifier), counter+1)
+				if isOK {
+					cgreader.Tracef("%d. len = %d, to %s costs %f", counter, len(route), station.identifier, cost)
+					TravelRecursive(cost, append(route, station.identifier), counter+1)
+				}
 			}
 		}
 	}
