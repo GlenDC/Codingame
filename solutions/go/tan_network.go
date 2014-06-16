@@ -37,16 +37,7 @@ var routes map[string][]Destination
 var finalStation, startStation string
 var finalRoute []string
 
-func TraceDestinations(station string, destinations []Destination) {
-	var stops string
-	for _, stop := range destinations {
-		stops += stop.identifier + ", "
-	}
-	cgreader.Tracef("%s => Stops: %s", station, stops)
-}
-
-func TravelRecursive(cost float64, route []string, counter int) {
-	TraceDestinations(route[len(route)-1], routes[route[len(route)-1]])
+func TravelRecursive(cost float64, route []string) {
 	for _, station := range routes[route[len(route)-1]] {
 		if cost += station.cost; cost < minCost {
 			if station.identifier == finalStation {
@@ -61,25 +52,20 @@ func TravelRecursive(cost float64, route []string, counter int) {
 					}
 				}
 				if isOK {
-					cgreader.Tracef("%d. len = %d, to %s costs %f", counter, len(route), station.identifier, cost)
-					TravelRecursive(cost, append(route, station.identifier), counter+1)
+					TravelRecursive(cost, append(route, station.identifier))
 				}
 			}
 		}
 	}
 }
 
-/*
-cgreader.RunAndValidateManualPrograms(
-		cgreader.GetFileList("../../input/tan_network_%d.txt", 4),
-		cgreader.GetFileList("../../output/tan_network_%d.txt", 4),*/
-
 func main() {
-	cgreader.RunAndValidateManualProgram(
-		"../../input/tan_network_4.txt",
-		"../../output/tan_network_4.txt",
+	cgreader.RunAndValidateManualPrograms(
+		cgreader.GetFileList("../../input/tan_network_%d.txt", 4),
+		cgreader.GetFileList("../../output/tan_network_%d.txt", 4),
 		true,
 		func(input <-chan string, output chan string) {
+			// this block could be ommited when solo-running
 			minCost = math.MaxFloat64
 			finalStation, startStation = "", ""
 			routes, finalRoute = nil, nil
@@ -92,10 +78,10 @@ func main() {
 			for i := uint32(0); i < ns; i++ {
 				station := GetInput(input)
 				info := strings.Split(station, ",")
-					stations[info[0]] = Station{
-						info[1][1 : len(info[1])-1],
-						ToFloat(info[3]),
-						ToFloat(info[4])}
+				stations[info[0]] = Station{
+					info[1][1 : len(info[1])-1],
+					ToFloat(info[3]),
+					ToFloat(info[4])}
 			}
 
 			if startStation == finalStation {
@@ -109,36 +95,19 @@ func main() {
 				route := GetInput(input)
 				ra, ro := string(route[:4]), string(route[14:])
 
-				// maybe this can be omitted.
-				// do a/b test when all solutions work
-				isOK := true
-				for _, destination := range routes[ra] {
-					if destination.identifier == ro {
-						isOK = false
-						break
-					}
-				}
+				a, b := stations[ra], stations[ro]
+				cost := GetCost(
+					a.latitude, b.latitude,
+					a.longitude, b.longitude)
 
-				if isOK {
-					a, b := stations[ra], stations[ro]
-					cost := GetCost(
-						a.latitude, b.latitude,
-						a.longitude, b.longitude)
-
-					if ra == startStation {
-						cgreader.Tracef("%s -> %s", ra, ro)
-					}
-
-					routes[ra] = append(routes[ra], Destination{ro, cost})
-				}
+				routes[ra] = append(routes[ra], Destination{ro, cost})
 			}
 
 			var startStops string
 			for _, stop := range routes[startStation] {
 				startStops += stop.identifier + ", "
 			}
-			cgreader.Tracef("Original destinations: %s", startStops)
-			TravelRecursive(0, append(make([]string, 0), startStation), 0)
+			TravelRecursive(0, append(make([]string, 0), startStation))
 
 			if finalRoute == nil {
 				output <- "IMPOSSIBLE"
