@@ -39,22 +39,18 @@ var minCost uint16 = math.MaxUint16
 var routes map[uint32][]Destination
 var finalHash, startHash uint32
 var finalRoute []uint32
+var stationsMC map[uint32]uint16
 
 func TravelRecursive(cost uint16, route []uint32) {
 	for _, destination := range routes[route[len(route)-1]] {
 		if cost += destination.cost; cost < minCost {
-			if destination.hash == finalHash {
-				minCost = cost
-				finalRoute = append(route, destination.hash)
-			} else {
-				isOK := true
-				for _, stop := range route {
-					if destination.hash == stop {
-						isOK = false
-						break
-					}
-				}
-				if isOK {
+			mcValue, mcOK := stationsMC[destination.hash]
+			if (mcOK && cost < mcValue) || !mcOK {
+				stationsMC[destination.hash] = cost
+				if destination.hash == finalHash {
+					minCost = cost
+					finalRoute = append(route, destination.hash)
+				} else {
 					TravelRecursive(cost, append(route, destination.hash))
 				}
 			}
@@ -75,6 +71,7 @@ func main() {
 			start, stop := GetInput(input), GetInput(input)
 			hashMap = make(map[uint32]string)
 			identifierMap = make(map[string]uint32)
+			stationsMC = make(map[uint32]uint16)
 
 			var ns, nr uint32
 			fmt.Sscanf(<-input, "%d", &ns)
@@ -105,9 +102,7 @@ func main() {
 				ha, ho := identifierMap[ra], identifierMap[ro]
 
 				a, b := stations[ha], stations[ho]
-				cost := GetCost(
-					a.latitude, b.latitude,
-					a.longitude, b.longitude)
+				cost := GetCost(a.latitude, b.latitude, a.longitude, b.longitude)
 
 				routes[ha] = append(routes[ha], Destination{ho, cost})
 			}
