@@ -13,9 +13,9 @@ func ParseFloat(in string) (out float64) {
 }
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
-		"../../input/defibrillator_1.txt",
-		"../../output/defibrillator_1.txt",
+	cgreader.RunAndValidateManualPrograms(
+		cgreader.GetFileList("../../input/defibrillator_%d.txt", 4),
+		cgreader.GetFileList("../../output/defibrillator_%d.txt", 4),
 		true,
 		func(input <-chan string, output chan string) {
 			var longitude, latitude float64
@@ -31,9 +31,9 @@ func main() {
 
 				lo, la := ParseFloat(info[4]), ParseFloat(info[5])
 
-				x := (lo - longitude) * math.Cos((latitude+la)/2.0)
+				x := (lo - longitude) * math.Cos(latitude+la)
 				y := la - latitude
-				d := math.Sqrt(math.Pow(x, 2)+math.Pow(y, 2)) * 6371.0
+				d := x*x + y*y
 
 				if d < distance {
 					distance, name = d, info[1]
