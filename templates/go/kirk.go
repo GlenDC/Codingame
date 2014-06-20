@@ -1,17 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"github.com/glendc/cgreader"
 )
 
 func Initialize(input <-chan string) {
-	// Parse Input
+	// initial input...
 }
 
 func Update(input <-chan string, output chan string) {
-	// Define solution Logic
+	// process input into output
 }
 
 func main() {
-	cgreader.RunRagnarokProgram("ragnarok_1.txt", true, Initialize, Update)
+	cgreader.RunKirkProgram("kirk_1.txt", true, Initialize, Update)
 }
