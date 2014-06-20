@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/glendc/cgreader"
+)
 
 var mountains [8]int
 
@@ -32,15 +35,27 @@ func (s *ship) FireOrHold() string {
 	return "HOLD"
 }
 
-func main() {
-	hero := ship{0, 0, -1}
+var hero ship
 
-	for {
-		fmt.Scanf("%d %d\n", &hero.x, &hero.y)
-		for i := range mountains {
-			fmt.Scanf("%d\n", &mountains[i])
-		}
+func Initialize(input <-chan string) {
+	hero = ship{0, 0, -1}
+}
 
-		fmt.Println(hero.FireOrHold())
+func Update(input <-chan string, output chan string) {
+	fmt.Sscanf(<-input, "%d %d", &hero.x, &hero.y)
+	for i := range mountains {
+		fmt.Sscanf(<-input, "%d", &mountains[i])
 	}
+
+	output <- hero.FireOrHold()
+}
+
+func main() {
+	cgreader.SetFrameRate(5)
+	cgreader.RunKirkProgram("../../input/kirk_6.txt", true, Initialize, Update)
+	/*cgreader.RunKirkPrograms(
+	cgreader.GetFileList("../../input/kirk_%d.txt", 6),
+	false,
+	Initialize,
+	Update)*/
 }
