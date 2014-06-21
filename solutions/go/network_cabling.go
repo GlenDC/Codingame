@@ -23,6 +23,7 @@ func main() {
 			}
 
 			yPositions := make(map[int]int)
+			averageYPositions := make([]int, n)
 			minX, maxX, aY, aN, m := math.MaxInt32, 0, 0, 0, 0
 			for i := 0; i < n; i++ {
 				var x, y int
@@ -36,25 +37,27 @@ func main() {
 
 				yPositions[y]++
 				if yPositions[y] > m {
-					aY, m = y, yPositions[y]
-					aN = 1
+					aY, m, aN = y, yPositions[y], 1
+					averageYPositions[0] = y
 				} else if yPositions[y] == m {
 					aY += y
+					averageYPositions[aN] = y
 					aN++
 				}
 			}
 
 			aY /= aN
 			cY, distance := aY, math.MaxInt32
-			for vY, vN := range yPositions {
-				if vN == m {
-					d := vY - aY
-					if d < 0 {
-						d *= -1
-					}
-					if d < distance {
-						cY, distance = vY, d
-					}
+			for i := 0; i < aN; i++ {
+				y := averageYPositions[i]
+				d := y - aY
+
+				if d < 0 {
+					d *= -1
+				}
+
+				if d < distance {
+					cY, distance = y, d
 				}
 			}
 
