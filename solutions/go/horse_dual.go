@@ -22,10 +22,9 @@ func (s intArray) Less(i, j int) bool {
 }
 
 func main() {
-	cgreader.SetTimeout(2.0)
-	cgreader.RunAndValidateManualProgram(
-		"../../input/horse_dual_3.txt",
-		"../../output/horse_dual_3.txt",
+	cgreader.RunAndValidateManualPrograms(
+		cgreader.GetFileList("../../input/horse_dual_%d.txt", 3),
+		cgreader.GetFileList("../../output/horse_dual_%d.txt", 3),
 		true,
 		func(input <-chan string, output chan string) {
 			var n int
