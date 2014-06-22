@@ -1,0 +1,17 @@
+'users'=
+(
+    (
+        'id'=10;
+        'name'='Serge';
+        'roles'=
+        (
+            'visitor';
+            'moderator'
+        )
+    );
+    (
+        'id'=11;
+        'name'='Biales'
+    );
+    true
+)
