@@ -5,36 +5,65 @@ import (
 	"github.com/glendc/cgreader"
 )
 
+type Jumper struct {
+	income, position int
+}
+
 func main() {
 	cgreader.RunAndValidateManualPrograms(
 		cgreader.GetFileList("../../input/roller_coaster_%d.txt", 6),
 		cgreader.GetFileList("../../output/roller_coaster_%d.txt", 6),
 		true,
 		func(input <-chan string, output chan string) {
-			var L, C, N int
-            fmt.Sscanf(<-input, "%d %d %d", &L, &C, &N)
+			var L, C, N, p, i, pkg, people, group, total int
+			fmt.Sscanf(<-input, "%d %d %d", &L, &C, &N)
 
-            if C == 0 || N == 0 {
-                output <- "0"
-                return
-            }
+			if C == 0 || N == 0 {
+				output <- "0"
+				return
+			}
 
-            groups := make([]int, N)
-            for i := range groups {
-                fmt.Sscanf(<-input, "%d", &groups[i])
-            }
+			groups, jumpers := make([]int, N), make([]Jumper, N)
 
-            income, identifier := 0, 0
-            for ;C > 0; C-- {
-                for l, i := 0, L; l < N && i > 0; l++ {
-                    people := groups[identifier%N]
-                    if i -= people; i >= 0 {
-                        income += people
-                        identifier++
-                    }
-                }
-            }
+			for i = range groups {
 
-            output <- fmt.Sprintf("%d", income)
+				fmt.Sscanf(<-input, "%d", &people)
+				total += people
+				groups[i] = people
+			}
+
+			if total <= L {
+				output <- fmt.Sprintf("%d", total*C)
+				return
+			}
+
+			for i = range groups {
+				people, p = groups[i], i+1
+				for {
+					if p == N {
+						p = 0
+					}
+
+					group = groups[p]
+
+					if pkg = people + group; pkg > L {
+						jumpers[i].income, jumpers[i].position = people, p
+						break
+					} else if pkg == L {
+						jumpers[i].income, jumpers[i].position = pkg, (p+1)%N
+						break
+					} else {
+						p++
+						people = pkg
+					}
+				}
+			}
+
+			for total, p, i = 0, 0, 0; i < C; i++ {
+				total += jumpers[p].income
+				p = jumpers[p].position
+			}
+
+			output <- fmt.Sprintf("%d", total)
 		})
 }
