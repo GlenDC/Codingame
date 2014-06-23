@@ -18,7 +18,7 @@ _**Disclaimer**: I am not the original author of the challenge descriptions, inp
 1. ASCII Art: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/ascii_art.go)
 1. Chuck Norris: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/chuck_norris.go)
 1. MIME Type: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/mime_types.go)
-1. Defibrillators: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/defibrillators.go)
+1. Defibrillators: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/defibrillator.go)
 1. Horse-racing Duals: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/horse_dual.go)
 
 ### Level #2
