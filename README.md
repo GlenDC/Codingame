@@ -15,7 +15,7 @@ _**Disclaimer**: I am not the original author of the challenge descriptions, inp
 1. Ragnarök - Power of Thor: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/ragnarok.go)
 1. Mars Lander - Level 1: _unsolved_
 1. Temperatures: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/temperatures.go)
-1. ASCII Art: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/ascii.go)
+1. ASCII Art: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/ascii_art.go)
 1. Chuck Norris: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/chuck_norris.go)
 1. MIME Type: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/mime_type.go)
 1. Defibrillators: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/defibrillators.go)
