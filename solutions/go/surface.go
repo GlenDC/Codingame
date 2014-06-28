@@ -17,8 +17,8 @@ type waterInfo struct {
 
 func main() {
 	cgreader.RunAndValidateManualPrograms(
-		cgreader.GetFileList("../../input/surface_%d.txt", 2),
-		cgreader.GetFileList("../../output/surface_%d.txt", 2),
+		cgreader.GetFileList("../../input/surface_%d.txt", 9),
+		cgreader.GetFileList("../../output/surface_%d.txt", 9),
 		true,
 		func(input <-chan string, output chan string) {
 			var G, h, v, g, o, i, t uint32
@@ -46,14 +46,17 @@ func main() {
 							if v&WATER_MASK == 1 {
 								g, o = v>>GROUP_SHIFT, WORLD[t]>>GROUP_SHIFT
 
-								for _, w = range GROUPS[o] {
-									WORLD[w.position] = v
-								}
+								if g != o {
+									for _, w = range GROUPS[o] {
+										WORLD[w.position] = v
+									}
 
-								GROUPS[g] = append(GROUPS[g], GROUPS[o]...)
-								delete(GROUPS, o)
+									GROUPS[g] = append(GROUPS[g], GROUPS[o]...)
+									delete(GROUPS, o)
+								}
 							} else {
 								v = WORLD[t]
+								g = v >> GROUP_SHIFT
 							}
 
 							GROUPS[g] = append(GROUPS[g], waterInfo{v, i})
