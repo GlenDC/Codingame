@@ -40,12 +40,12 @@ _**Disclaimer**: I am not the original author of the challenge descriptions, inp
 1. Skynet - The Bridge: _unsolved_
 1. Kirk's Quest - The Labyrinth: _unsolved_
 1. Ragnarok - Thor vs Giants: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/ragnarok_giants.go)
-1. Super Compuer: _unsolved_
+1. Super Computer: _unsolved_
 1. Roller Coaster: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/roller_coaster.go)
 1. CGX Formatter: _unsolved_
 1. TAN Network: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/tan_network.go)
 1. Genome Sequencing: _unsolved_
-1. Surface: _unsolved_
+1. Surface: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/surface.go)
 1. Blender - The money machine: _unsolved_
 1. Blender - Complexity: _unsolved_
 1. Snakes and ladders: [Go](https://github.com/GlenDC/Codingame/blob/master/solutions/go/snakes_and_ladders.go)
