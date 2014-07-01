@@ -16,7 +16,9 @@
                         be Cell 1 which was cleared by the previous loop
     <-                  Decrement the loop Counter in Cell 0
 ]                       Loop till Cell 0 is zero; number of iterations is 8
- 
+
+?>?>?>?>?>?>?<<<<<<
+
 The result of this is:
 Cell No :   0   1   2   3   4   5   6
 Contents:   0   0  72 104  88  32   8
