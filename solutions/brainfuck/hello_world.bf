@@ -1,3 +1,15 @@
+{
+    "type": "manual",
+    "input": {
+        "path": "../../input/network_cabling_*.txt",
+        "amount": 2
+    },
+    "output": {
+        "path": "../../output/network_cabling_*.txt",
+        "amount": 2
+    }
+}
+
 +++++ +++               Set Cell 0 to 8
 [
     >++++               Add 4 to Cell 1; this will always set Cell 1 to 4
