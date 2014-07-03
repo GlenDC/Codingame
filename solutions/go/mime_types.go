@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
+	cgreader.RunStaticProgram(
 		"../../input/mime_types_5.txt",
 		"../../output/mime_types_5.txt",
 		true,
@@ -31,12 +31,12 @@ func main() {
 				if strings.Contains(path, ".") {
 					sp := strings.Split(path, ".")
 					if value, ok := types[sp[len(sp)-1]]; ok {
-						output <- fmt.Sprintf("%s", value)
+						output <- fmt.Sprintf("%s\n", value)
 					} else {
-						output <- fmt.Sprint("UNKNOWN")
+						output <- fmt.Sprintln("UNKNOWN")
 					}
 				} else {
-					output <- fmt.Sprint("UNKNOWN")
+					output <- fmt.Sprintln("UNKNOWN")
 				}
 			}
 		})

@@ -22,7 +22,7 @@ func (s intArray) Less(i, j int) bool {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/horse_dual_%d.txt", 3),
 		cgreader.GetFileList("../../output/horse_dual_%d.txt", 3),
 		true,

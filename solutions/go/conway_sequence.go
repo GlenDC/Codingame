@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/conway_sequence_%d.txt", 6),
 		cgreader.GetFileList("../../output/conway_sequence_%d.txt", 6),
 		true,

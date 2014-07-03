@@ -7,9 +7,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
-		//"../../input/network_cabling_5.txt",
-		//"../../output/network_cabling_5.txt",
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/network_cabling_%d.txt", 8),
 		cgreader.GetFileList("../../output/network_cabling_%d.txt", 8),
 		true,

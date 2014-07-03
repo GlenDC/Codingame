@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
+	cgreader.RunStaticProgram(
 		"../../input/temperatures_1.txt",
 		"../../output/temperatures_1.txt",
 		true,

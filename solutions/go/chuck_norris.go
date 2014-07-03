@@ -16,7 +16,7 @@ func PrintCNGroup(is_zero bool, counter int) (em string) {
 }
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
+	cgreader.RunStaticProgram(
 		"../../input/chuck_norris_1.txt",
 		"../../output/chuck_norris_1.txt",
 		true,
@@ -38,7 +38,6 @@ func main() {
 			}
 
 			is_zero, counter, lc := message[0] == '0', 0, len(message)-1
-			var encoded_message string
 
 			for i := range message {
 				if iz, il := message[i] == '0', i == lc; il || is_zero != iz {
@@ -46,19 +45,17 @@ func main() {
 						counter++
 					}
 
-					encoded_message += PrintCNGroup(is_zero, counter)
+					output <- PrintCNGroup(is_zero, counter)
 
 					if il && iz != is_zero {
-						encoded_message += " " + PrintCNGroup(iz, 1)
+						output <- " " + PrintCNGroup(iz, 1)
 					} else if !il {
-						encoded_message += " "
+						output <- " "
 					}
 
 					is_zero, counter = !is_zero, 0
 				}
 				counter++
 			}
-
-			output <- encoded_message
 		})
 }

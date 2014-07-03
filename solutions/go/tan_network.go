@@ -59,7 +59,7 @@ func TravelRecursive(cost uint16, route []uint32) {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/tan_network_%d.txt", 6),
 		cgreader.GetFileList("../../output/tan_network_%d.txt", 6),
 		true,

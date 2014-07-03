@@ -61,7 +61,7 @@ func GetCharacterAmount(word string) map[string]uint {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/scrabble_%d.txt", 7),
 		cgreader.GetFileList("../../output/scrabble_%d.txt", 7),
 		true,

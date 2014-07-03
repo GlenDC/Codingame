@@ -10,7 +10,7 @@ type Jumper struct {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/roller_coaster_%d.txt", 6),
 		cgreader.GetFileList("../../output/roller_coaster_%d.txt", 6),
 		true,

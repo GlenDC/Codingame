@@ -19,7 +19,7 @@ func TravelRecursive(children []int, coverage int) {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/dwarfs_giants_%d.txt", 3),
 		cgreader.GetFileList("../../output/dwarfs_giants_%d.txt", 3),
 		true,

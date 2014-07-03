@@ -83,7 +83,7 @@ func (s ESquare) GetState() uint8 {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/snakes_and_ladders_%d.txt", 5),
 		cgreader.GetFileList("../../output/snakes_and_ladders_%d.txt", 5),
 		true,

@@ -13,7 +13,7 @@ func ParseFloat(in string) (out float64) {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/defibrillator_%d.txt", 4),
 		cgreader.GetFileList("../../output/defibrillator_%d.txt", 4),
 		true,

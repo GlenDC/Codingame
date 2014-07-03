@@ -39,7 +39,7 @@ func (p *Program) GetOutput() string {
 }
 
 func main() {
-	cgreader.RunAndValidateFlowProgram(
+	cgreader.RunStaticProgram(
 		"../input/super_computer_1.txt",
 		"../output/super_computer_1.txt",
 		true,

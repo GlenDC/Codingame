@@ -51,9 +51,8 @@ func Update(input <-chan string, output chan string) {
 }
 
 func main() {
-	//cgreader.SetFrameRate(10)
-	//cgreader.RunKirkProgram("../../input/kirk_6.txt", true, Initialize, Update)
-	cgreader.RunKirkPrograms(
+	cgreader.RunInteractivePrograms(
+		"kirk",
 		cgreader.GetFileList("../../input/kirk_%d.txt", 6),
 		false,
 		Initialize,

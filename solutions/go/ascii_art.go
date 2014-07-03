@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
+	cgreader.RunStaticProgram(
 		"../../input/ascii_4.txt",
 		"../../output/ascii_4.txt",
 		true,
@@ -39,7 +39,7 @@ func main() {
 			}
 
 			for _, line := range lines {
-				output <- line
+				output <- fmt.Sprintln(line)
 			}
 		})
 }

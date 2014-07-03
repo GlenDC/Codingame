@@ -111,7 +111,8 @@ func Update(input <-chan string, output chan string) {
 }
 
 func main() {
-	cgreader.RunRagnarokGiantsPrograms(
+	cgreader.RunInteractivePrograms(
+		"ragnarok_giants",
 		[]string{
 			"../../input/ragnarok_giants_1.txt",
 			"../../input/ragnarok_giants_2.txt",

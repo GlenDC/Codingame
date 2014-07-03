@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/stock_exchange_losses_%d.txt", 5),
 		cgreader.GetFileList("../../output/stock_exchange_losses_%d.txt", 5),
 		true,

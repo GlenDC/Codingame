@@ -14,7 +14,7 @@ func CreateNode() Node {
 }
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/telephone_number_%d.txt", 5),
 		cgreader.GetFileList("../../output/telephone_number_%d.txt", 5),
 		true,
