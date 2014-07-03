@@ -5,13 +5,18 @@ import (
 )
 
 func Initialize(input <-chan string) {
-	// Parse Input
+	// initial input...
 }
 
 func Update(input <-chan string, output chan string) {
-	// Define solution Logic
+	// process input into output
 }
 
 func main() {
-	cgreader.RunRagnarokGiantsProgram("ragnarok_giants_1.txt", true, Initialize, Update)
+	cgreader.RunInteractiveProgram(
+		"../../input/input.txt",
+		"ragnarok",
+		true,
+		Initialize,
+		Update)
 }

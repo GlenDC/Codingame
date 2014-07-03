@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/glendc/cgreader"
 )
 
 func main() {
-	cgreader.RunAndValidateManualProgram(
+	cgreader.RunStaticProgram(
 		"../../input/input.txt",
 		"../../output/output.txt",
 		true,

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/glendc/cgreader"
 )
 
@@ -14,5 +13,10 @@ func Update(input <-chan string, output chan string) {
 }
 
 func main() {
-	cgreader.RunKirkProgram("kirk_1.txt", true, Initialize, Update)
+	cgreader.RunInteractivePrograms(
+		cgreader.GetFileList("../../input/input_%d.txt", 2),
+		"ragnarok",
+		true,
+		Initialize,
+		Update)
 }

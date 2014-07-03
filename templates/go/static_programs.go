@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/glendc/cgreader"
 )
 
 func main() {
-	cgreader.RunAndValidateManualPrograms(
+	cgreader.RunStaticPrograms(
 		cgreader.GetFileList("../../input/input_%d.txt", 2),
 		cgreader.GetFileList("../../output/output_%d.txt", 2),
 		true,
