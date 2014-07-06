@@ -14,8 +14,8 @@ func Update(input <-chan string, output chan string) {
 
 func main() {
 	cgreader.RunInteractiveProgram(
-		"../../input/input.txt",
-		"ragnarok",
+		"<input_file>",
+		"<program_file>",
 		true,
 		Initialize,
 		Update)

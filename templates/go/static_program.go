@@ -6,8 +6,8 @@ import (
 
 func main() {
 	cgreader.RunStaticProgram(
-		"../../input/input.txt",
-		"../../output/output.txt",
+		"<input_file>",
+		"<output_file>",
 		true,
 		func(input <-chan string, output chan string) {
 			// program logic
