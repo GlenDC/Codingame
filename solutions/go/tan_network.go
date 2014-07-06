@@ -22,7 +22,7 @@ var identifierMap map[string]uint32
 
 func GetInput(input <-chan string) string {
 	line := <-input
-	return string(line[9:])
+	return string(line[9 : len(line)-1])
 }
 
 func ToFloat(str string) (x float64) {
@@ -110,10 +110,10 @@ func main() {
 			TravelRecursive(0, append(make([]uint32, 0), startHash))
 
 			if finalRoute == nil {
-				output <- "IMPOSSIBLE"
+				output <- "IMPOSSIBLE\n"
 			} else {
 				for _, hash := range finalRoute {
-					output <- stations[hash].name
+					output <- fmt.Sprintln(stations[hash].name)
 				}
 			}
 		})
